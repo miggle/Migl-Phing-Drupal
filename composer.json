@@ -53,7 +53,7 @@
         }
     ],
     "require": {
-        "phing/phing": "2.7.*",
+        "phing/phing": "2.*",
         "drupal/phing-drush-task": "1.0",
         "omissis/drupalextension": "dev-master",
         "drush/drush": "6.2.*",

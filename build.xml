@@ -501,7 +501,7 @@ Uses [phpcpd](https://github.com/sebastianbergmann/phpcpd) to detect duplicate
 code. This indicates potential refactorings.-->
   <target name="phpcpd"
           description="Generate pmd-cpd.xml using phpcpd"
-          depends="init, require.autoload">
+          depends="init">
     <phpcpd>
       <fileset refid="src.php.custom" />
       <formatter type="pmd" outfile="${project.logdir}/pmd-cpd.xml"/>
@@ -1333,10 +1333,6 @@ parsing installed. The task is primarily for template developers. -->
            passthru="true" checkreturn="true"/>
    </target>
 
-   <target name="require.autoload">
-     <adhoc><![CDATA[
-      require_once 'lib/composer/autoload.php';
-   ]]></adhoc>
-   </target>
+
 
 </project>
