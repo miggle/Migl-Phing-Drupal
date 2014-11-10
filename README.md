@@ -6,6 +6,7 @@
 * ensure composer is installed and available globally
 
 <code>curl -sS https://getcomposer.org/installer | php</code>
+
 <code>mv composer.phar /usr/local/bin/composer</code>
       
 * the following packages should be installed
