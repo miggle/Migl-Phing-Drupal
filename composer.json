@@ -59,7 +59,8 @@
         "drush/drush": "6.2.*",
         "squizlabs/php_codesniffer": "1.5.*",
         "phpmd/phpmd": "1.5.*",
-        "drupal/coder": "7.2.*"
+        "drupal/coder": "7.2.*",
+        "pear/http_request2": "2.2.1"
     },
     "config": {
         "bin-dir": "bin/"
