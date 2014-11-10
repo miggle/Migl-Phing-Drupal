@@ -61,7 +61,6 @@
         "phpmd/phpmd": "1.5.*",
         "sebastian/phpcpd": "*",
         "phploc/phploc": "*",
-        "phpdocumentor/phpdocumentor": "2.*",
         "drupal/coder": "7.2.*"
     },
     "config": {
