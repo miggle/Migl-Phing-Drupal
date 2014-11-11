@@ -91,7 +91,7 @@ projects[master_dependency][subdir] = custom
 ; -------------------------------------
 
 projects[] = shiny
-projects[] = bassline
+; projects[] = bassline
 
 ; -------------------------------------
 ; LIBRARIES
