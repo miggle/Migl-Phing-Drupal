@@ -7,11 +7,11 @@
 
 <code>curl -sS https://getcomposer.org/installer | php</code>
 
-<code>mv composer.phar /usr/local/bin/composer</code>
+<code>sudo mv composer.phar /usr/local/bin/composer</code>
       
 * the following packages should be installed
 
-<code>apt-get install php5 php5-cli php5-curl php5-gd sqlite3 libsqlite3-dev php5-sqlite php-pear</code>
+<code>sudo apt-get install php5 php5-cli php5-curl php5-gd sqlite3 libsqlite3-dev php5-sqlite php-pear nano zip</code>
 
 * Install the following pear package
 
