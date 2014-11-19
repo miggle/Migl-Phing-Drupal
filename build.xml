@@ -3,22 +3,22 @@
 
   <!-- ### Load properties
 
-  Loads a set of project specific properties from a `.properties` file.
+Loads a set of project specific properties from a `.properties` file.
 
-  These properties contain information regarding the individual project and/or
-  environment such as which version of Drupal you are using, how to create a
-  database and the names of your custom modules.
+These properties contain information regarding the individual project and/or
+environment such as which version of Drupal you are using, how to create a
+database and the names of your custom modules.
 
-  All available properties are described and set to a default value in
-  [`build.default.properties`](https://raw.github.com/reload/phing-drupal-template/master/build.default.properties).
-  You should create your own properties file by copying the
-  `build.default.properties` file to the root directory, rename it
-  `build.properties` and modify it according to your project.
+All available properties are described and set to a default value in
+[`build.default.properties`](https://raw.github.com/reload/phing-drupal-template/master/build.default.properties).
+You should create your own properties file by copying the
+`build.default.properties` file to the root directory, rename it
+`build.properties` and modify it according to your project.
 
-  Both property files are loaded so your custom `build.properties` file should
-  only contain properties where you want to override the default value e.g. set
-  your custom module code prefix or use a special version of one of the build
-  tools. -->
+Both property files are loaded so your custom `build.properties` file should
+only contain properties where you want to override the default value e.g. set
+your custom module code prefix or use a special version of one of the build
+tools. -->
   <target name="load-properties">
     <php function="dirname" returnProperty="phing.dir">
       <param value="${phing.file}"/>
@@ -174,7 +174,7 @@
   </target>
 
   <!-- ### Load properties -->
-  <!--<import file="${phing.dir}/build.components/build.load_properties.xml" />-->
+  <import file="${phing.dir}/build.components/build.load_properties.xml" />
 
   <!-- ### Setup directories -->
   <import file="${phing.dir}/build.components/build.setup_dirs.xml" />
@@ -194,13 +194,13 @@
   <!-- ### Download and enable a project/module -->
   <import file="${phing.dir}/build.components/build.drupal_module_enable.xml" />
 
-  <!-- HELPER TARGETS -- clone a git repo, apply a patch, used by numerous targets-->
+  <!-- HELPER TARGETS - clone a git repo, apply a patch, used by numerous targets-->
   <import file="${phing.dir}/build.components/build.helper_targets.xml" />
 
   <!-- ### Setup Phing Drush integration -->
   <import file="${phing.dir}/build.components/build.setup_phing_drush.xml" />
 
-  <!-- ### Build documentation using Phrocco -- appears to be a dead link??-->
+  <!-- ### Build documentation using Phrocco - appears to be a dead link??-->
   <import file="${phing.dir}/build.components/build.phrocco.xml" />
 
 </project>
