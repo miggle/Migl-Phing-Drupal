@@ -1,0 +1,15 @@
+<!-- ### Detect code mess
+
+Uses [PHPMD](http://phpmd.org/) to detect code mess and look for potential
+problems. -->
+  <target name="phpmd"
+          description="Generate pmd.xml using PHPMD"
+          depends="init">
+    <!-- We do not use the unusedcode ruleset as Drupal hook implementations
+         usually are declared with all arguements but may not use them
+         all. -->
+    <phpmd rulesets="codesize,naming,design">
+      <fileset refid="src.php.custom" />
+      <formatter type="xml" outfile="${project.logdir}/pmd.xml"/>
+    </phpmd>
+  </target>

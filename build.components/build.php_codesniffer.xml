@@ -1,0 +1,30 @@
+<!-- ### Review code using PHP_CodeSniffer
+
+The purpose and outcome of this target is the same as the coder-review
+targets. In general [PHP_CodeSniffer](http://pear.php.net/package/PHP_CodeSniffer/)
+is faster to execute but there does not seem to be a complete ruleset which
+covers all of the
+[Drupal coding standards](http://drupal.org/coding-standards).
+
+Consequently `coder-review-d6/7` and not `phpcs` is used for the main targets.
+-->
+
+    <target name="phpcs"
+            description="Generate checkstyle.xml using PHP_CodeSniffer"
+            depends="init">
+      <!-- Clone a repository containing Drupal code guidelines for
+           PHP_CodeSniffer. -->
+      <phingcall target="setup-git-repo">
+        <property name="repo.dir" value="${project.toolsdir}/drupalcs"/>
+        <property name="repo.url" value="${phpcs.drupalcs.repository.url}" />
+      </phingcall>
+      <!-- There is no Phing task for PHP Codesniffer in v2.4.6.
+           It's coming for v2.5. Execute while we wait. -->
+      <exec command="phpcs --report=checkstyle
+                    --report-file=${project.logdir}/checkstyle-codesniffer.xml
+                    --standard=${project.toolsdir}/drupalcs/ruleset.xml
+                    --extensions=php,inc
+                    --ignore=*/contrib/*,*/*.features.*,*/*.field_group.inc,*/*.layout.*,*/*.pages_default.*,*/*.panels_default.*,*/*strongarm.inc,*/*.views_default.inc
+                    ${project.sitesdir}"
+            logoutput="true" />
+    </target>

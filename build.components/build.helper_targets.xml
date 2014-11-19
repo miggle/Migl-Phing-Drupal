@@ -1,0 +1,39 @@
+  <!-- HELPER -->
+  <!-- ### Clone a git repository -->
+  <target name="setup-git-repo">
+    <!-- Only clone if repository does not exist already -->
+    <if>
+      <not><available file="${repo.dir}" /></not>
+      <then>
+        <!-- Set revision to HEAD if not already defined -->
+        <property name="repo.revision" value="HEAD" override="false"/>
+
+        <echo>Cloning ${repo.url} ${repo.revision} into ${repo.dir}</echo>
+        <!-- The [`gitclone` task](http://www.phing.info/docs/guide/stable/chapters/appendixes/AppendixC-OptionalTasks.html#GitCloneTask)
+             does not seem to work. Use exec instead. -->
+        <exec command="git clone ${repo.url} ${repo.dir}" />
+        <exec command="git checkout ${repo.revision}" dir="${repo.dir}"/>
+      </then>
+    </if>
+  </target>
+
+  <!-- HELPER -->
+  <!-- ### Download and apply a patch -->
+  <target name="apply-http-patch">
+    <php function="basename" returnProperty="patch.file">
+      <param>${patch.url}</param>
+    </php>
+
+    <!-- If patch has already been downloaded then we assume it has also been
+         applied -->
+    <if>
+      <not><available file="${project.toolsdir}/${patch.file}"/></not>
+      <then>
+        <httpget url="${patch.url}"
+                 dir="${project.toolsdir}"
+                 proxy="${phing.httpget.proxy}" />
+        <patch patchfile="${project.toolsdir}/${patch.file}"
+               dir="${patch.dir}" haltonfailure="true"/>
+      </then>
+    </if>
+  </target>

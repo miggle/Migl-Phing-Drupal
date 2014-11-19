@@ -1,0 +1,12 @@
+<!-- ### Detect potential copy/pasting
+
+Uses [phpcpd](https://github.com/sebastianbergmann/phpcpd) to detect duplicate
+code. This indicates potential refactorings.-->
+  <target name="phpcpd"
+          description="Generate pmd-cpd.xml using phpcpd"
+          depends="init">
+    <phpcpd>
+      <fileset refid="src.php.custom" />
+      <formatter type="pmd" outfile="${project.logdir}/pmd-cpd.xml"/>
+    </phpcpd>
+  </target>

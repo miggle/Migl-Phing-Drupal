@@ -1,0 +1,33 @@
+  <!-- ### Download and enable a project/module -->
+  <target name="enable-module"
+          depends="setup-phing-drush">
+    <!-- If project is not set then we assume that the module name is also
+         the project name. -->
+    <property name="project" value="${module}" override="no"/>
+
+    <!-- If the module is not already available then download it -->
+    <drush command="pm-list" returnProperty="modules.available"/>
+    <php function="strpos" returnProperty="module.available">
+      <param>${modules.available}</param>
+      <param>${module}</param>
+    </php>
+    <if>
+      <not><istrue value="${module.available}"/></not>
+      <then>
+        <!-- Download specific version if specified -->
+        <condition property="download" value="${project}-${project.version}">
+          <isset property="project.version"/>
+        </condition>
+        <property name="download" value="${project}" override="false"/>
+
+        <drush command="pm-download" assume="yes">
+          <param>${download}</param>
+        </drush>
+      </then>
+    </if>
+
+    <!-- Enable the module -->
+    <drush command="pm-enable" assume="yes">
+      <param>${module}</param>
+    </drush>
+  </target>

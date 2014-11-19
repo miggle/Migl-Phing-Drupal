@@ -1,0 +1,86 @@
+<!-- ### Drush Make
+
+Download and install the source code for the site using Drush Make.
+
+This target is only executed if the project uses make files as configured
+in the `build.properties` file. Execution can also be skipped by setting the
+`project.make.skip` property from the command line or in other targets.
+
+This is part of the initialization of the build. This target should only be
+called from `init` target. -->
+  <target name="make"
+          depends="load-properties, setup-phing-drush"
+          if="drupal.make.file">
+    <if>
+      <or>
+        <not><isset property="project.make.skip"/></not>
+        <not><istrue value="${project.make.skip}"/></not>
+      </or>
+      <then>
+        <!-- Delete any prexisting builds -->
+        <delete dir="${project.drupal.dir}"/>
+
+        <!-- If the make file does not include a core Drupal project we need
+             to download one separately. This should be defined in
+             `build.properties`. -->
+        <if>
+          <and>
+            <isset property="drupal.make.nocore"/>
+            <istrue value="${drupal.make.nocore}"/>
+          </and>
+          <then>
+            <!-- Download the appropriate version of Drupal -->
+            <drush command="dl" assume="yes">
+              <param>drupal-${drupal.version}</param>
+              <option name="drupal-project-rename">${drupal.make.dir}</option>
+            </drush>
+
+            <!-- Make the project in the project code directory. If using
+                 a directory inside the `sites` folder modules can be tested
+                 faster and easier when using the minimal profile. -->
+            <drush command="make" assume="yes">
+              <param>${drupal.make.file}</param>
+              <option name="contrib-destination">${drupal.make.dir}/${project.code.dir}</option>
+              <option name="no-core"/>
+            </drush>
+
+            <!-- Copy the install profile bundled with the make file to the
+                 appropriate directory. -->
+            <copy todir="${project.drupal.dir}/profiles/${drupal.profile}/">
+              <fileset dir="${project.basedir}">
+                <include name="${drupal.profile}.*" />
+              </fileset>
+            </copy>
+          </then>
+          <else>
+            <drush command="make" assume="yes">
+              <param>${drupal.make.file}</param>
+              <param>${drupal.make.dir}</param>
+            </drush>
+          </else>
+        </if>
+
+        <if>
+          <isset property="drupal.make.rewritebase" />
+          <then>
+            <reflexive file="${project.drupal.dir}/.htaccess">
+              <filterchain>
+                <replaceregexp>
+                  <regexp pattern="# RewriteBase [\w/]*" replace="RewriteBase ${drupal.make.rewritebase}"/>
+                </replaceregexp>
+              </filterchain>
+            </reflexive>
+          </then>
+        </if>
+
+        <!-- Set property to prevent target from being executed multiple times -->
+        <property name="project.make.skip" value="true"/>
+      </then>
+      <else>
+        <echo>
+          Skipping drush make.${line.separator}
+          drupal.make.skip has been set to ${project.make.skip}.
+        </echo>
+      </else>
+    </if>
+  </target>

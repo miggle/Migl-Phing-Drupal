@@ -1,0 +1,30 @@
+<!-- ### Generate code statistics
+
+Measures the size of the project using
+[phploc](http://sebastianbergmann.github.com/phploc/) and generates
+statistics. -->
+  <target name="phploc"
+          description="Generate phploc.csv using phploc"
+          depends="init, setup-phing-phploc">
+    <!-- Suffixes should be the same as included in the
+         src.php filesets -->
+    <phploc reportType="csv"
+            reportName="phploc" reportDirectory="${project.logdir}"
+            suffixes="php,module,inc,install,profile,test" countTests="true">
+      <fileset refid="src.php.custom" />
+    </phploc>
+  </target>
+
+  <!-- #### Setup Phing phploc integration -->
+  <target name="setup-phing-phploc"
+          depends="init" >
+    <!-- Clone the project -->
+    <phingcall target="setup-git-repo">
+      <property name="repo.dir" value="${project.toolsdir}/phing-phploc"/>
+      <property name="repo.url" value="${phing.phploc.repository.url}" />
+    </phingcall>
+    <!-- Register the custom Phing task -->
+    <taskdef name="phploc" classname="PHPLocTask"
+             classpath="${project.toolsdir}/phing-phploc" />
+  </target>
+

@@ -1,0 +1,34 @@
+<!-- ### Setup directories
+
+Define working directories - where the individual parts of the build are and
+should be located. These are used in other targets.
+
+This is part of the initialization of the build. This target should only be
+called from `init` target. -->
+  <target name="setup-dirs"
+          depends="load-properties">
+    <if>
+      <isset property="drupal.make.dir"/>
+      <then>
+        <property name="project.drupal.dir"
+                value="${project.basedir}/${drupal.make.dir}" />
+      </then>
+      <else>
+        <property name="project.drupal.dir"
+                value="${project.basedir}" />
+      </else>
+    </if>
+
+    <property name="project.sitesdir"
+              value="${project.drupal.dir}/${project.code.dir}" />
+    <property name="project.builddir"
+              value="${project.basedir}/build" />
+    <property name="project.toolsdir"
+              value="${project.builddir}/tools" />
+    <property name="project.coveragedir"
+              value="${project.builddir}/coverage" />
+    <property name="project.logdir"
+              value="${project.builddir}/logs" />
+    <property name="project.testdir"
+              value="${project.builddir}/tests" />
+  </target>

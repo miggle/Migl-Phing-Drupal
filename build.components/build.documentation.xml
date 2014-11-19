@@ -1,0 +1,39 @@
+<!-- ### Generate documentation
+
+Generate HTML documentation and code browser for the project. -->
+  <target name="docs" depends="init,
+                               clean,
+                               phpdoc,
+                               phpcb" />
+
+<!-- ### Generate documentation -->
+<!-- #### Generate API Documentation
+
+Uses [phpDocumentor](http://www.phpdoc.org/) to generate documentation. -->
+  <target name="phpdoc"
+          description="Generate API documentation using phpDocumentor">
+    <mkdir dir="${project.buildir}/api"/>
+    <phpdoc title="API Documentation"
+            destdir="${project.builddir}/api"
+            sourcecode="php"
+            output="HTML:Smarty:PHP">
+      <fileset refid="src.php" />
+    </phpdoc>
+  </target>
+
+<!-- #### Generate a code browser
+
+Generate a code browser for PHP files with syntax highlighting and
+colored error-sections using
+[PHP_CodeBrowser](https://github.com/Mayflower/PHP_CodeBrowser). -->
+  <target name="phpcb"
+          description="Aggregate tool output with PHP_CodeBrowser"
+          depends="init">
+    <mkdir dir="${project.builddir}/code-browser"/>
+    <!-- There is no Phing target for PHP CodeBrowser so do a plain
+         execute. -->
+    <exec command="phpcb  --log ${project.logdir}
+                          --source ${project.basedir}
+                          --output ${project.builddir}/code-browser"
+          logoutput="true" />
+  </target>

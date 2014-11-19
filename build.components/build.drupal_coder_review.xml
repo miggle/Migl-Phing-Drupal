@@ -1,0 +1,110 @@
+<!-- ### Drupal Coder review
+
+Review code using [Drupal coder module](http://drupal.org/project/coder).
+
+Configuration of which modules and themes to review is done in
+`build.properties`. If your modules use a common prefix such as
+`yourproject_module1`, `yourproject_module2` you can add all modules with a
+specific prefix. -->
+  <target name="coder-review-d6"
+          description="Review code using Drupal 6 Coder module"
+          depends="init">
+    <echo level="warning">Coder Review is not supported for Drupal 6 yet.
+                          Check http://drupal.org/node/858330 for
+                          patches/updates.</echo>
+  </target>
+
+  <target name="coder-review-d7"
+          description="Review code using Drupal 7 Coder module"
+          depends="init, clean, site-install">
+    <!-- Setup properties for running Coder Review.
+         For some reason these properties are not passed correctly through to
+         subtargets when defining them within the phingcall. -->
+    <property name="coder.review.command" value="coder-review"/>
+
+    <!-- Download and enable the Coder Review module -->
+    <phingcall target="enable-module">
+      <property name="project" value="coder"/>
+      <property name="project.version" value="7.x-1.0"/>
+      <property name="module" value="coder_review"/>
+    </phingcall>
+
+    <!-- Perform actual coder review for each style -->
+    <foreach target="coder-review" param="coder.review.type"
+             list="comment,i18n,security,sql,style" />
+  </target>
+
+<!-- #### Perform coder review
+
+This target requires properties set by calling targets coder-review-d6 or
+coder-review-d7.
+
+No need to run `init` here. This target should only be called from parent
+`coder-review-*` targets. -->
+  <target name="coder-review"
+          depends="setup-phing-drush">
+    <!-- Get a list of modules and themes matching the project prefix.
+         These are the ones we are going to review. -->
+    <drush command="pm-list" pipe="true" returnProperty="projects" />
+    <!-- The project list is piped through a file as this seems to be
+         the only way to handle filtering of values in Phing. -->
+    <delete file="${project.logdir}/projects.txt" />
+    <append text="${projects}" destFile="${project.logdir}/projects.txt" />
+
+    <!-- Build a regular expression to match modules based on the
+         set properties. The propery can contain prefixes separated by comma
+         and/or spaces. The expression should be in the format
+         `^(prefix1|prefix2|prefix3)_`. -->
+    <php expression="'^(' . preg_replace('/(\s+|\s*,\s*)/', '|', '${project.code.prefix}') .')_'"
+         returnProperty="project.code.prefix.regex"/>
+
+    <loadfile property="project.code.projects"
+              file="${project.logdir}/projects.txt">
+      <filterchain>
+        <linecontainsregexp>
+          <regexp pattern="${project.code.prefix.regex}" />
+        </linecontainsregexp>
+        <!-- Prefix all lines with a space.
+             We need the space as separator when we strip line breaks -->
+        <prefixlines prefix=" " />
+        <striplinebreaks />
+      </filterchain>
+    </loadfile>
+
+    <!-- Cleanup the custom code property. Commas and multiple whitespace
+         characters are reduced to a single space. -->
+    <php expression="preg_replace('/(\s+|\s*,\s*)/', ' ', '${project.code.custom}')"
+         returnProperty="project.code.custom"/>
+
+    <!-- Execute coder review and output results in XML format-->
+    <drush command="${coder.review.command}" assume="yes"
+           pipe="yes" returnProperty="xml">
+      <param>no-empty</param>
+      <param>checkstyle</param>
+      <param>minor</param>
+      <param>${coder.review.type}</param>
+      <!-- Review all the modules and themes matching the project prefix -->
+      <param>${project.code.projects}</param>
+      <!-- Review additional modules which do not match the prefix -->
+      <param>${project.code.custom}</param>
+    </drush>
+
+    <!-- Write XML output to file -->
+    <property name="coderreview.checkstyle.file"
+              value="${project.logdir}/checkstyle-${coder.review.type}.xml" />
+    <delete file="${coderreview.checkstyle.file}" />
+    <append destFile="${coderreview.checkstyle.file}" text="${xml}" />
+
+    <!-- Convert source from source extract to Category.Type format -->
+    <php function="ucwords" returnProperty="type">
+      <param value="${coder.review.type}"/>
+    </php>
+    <reflexive file="${coderreview.checkstyle.file}">
+      <filterchain>
+        <replaceregexp>
+          <regexp pattern='source=".*"'
+                  replace='source="Drupal.CoderReview.${type}"' />
+        </replaceregexp>
+      </filterchain>
+    </reflexive>
+  </target>

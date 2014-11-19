@@ -1,0 +1,30 @@
+<!-- ### Clean working environment  -->
+  <target name="clean"
+          description="Clean up and create artifact directories"
+          depends="setup-dirs"
+          unless="project.cleaned">
+    <!-- Delete any existing artifacts from a previous build.
+         Do not delete builddir. It may contain the build file! -->
+    <delete dir="${project.toolsdir}"/>
+    <delete dir="${project.coveragedir}"/>
+    <delete dir="${project.logdir}"/>
+    <delete dir="${project.testdir}"/>
+    <!-- Verbose. We need to make sure any database is deleted. Reinstalling
+         the site with an existing database causes the build to fail. -->
+    <delete file="${project.drupal.dir}/database.sqlite" verbose="true" />
+    <!-- Remove leftover Drupal simpletest databases -->
+    <delete>
+      <fileset dir="${project.basedir}">
+        <include name="database.sqlite-simpletest*"/>
+      </fileset>
+    </delete>
+
+    <!-- Recreate directories for artifacts -->
+    <mkdir dir="${project.toolsdir}"/>
+    <mkdir dir="${project.coveragedir}"/>
+    <mkdir dir="${project.logdir}"/>
+    <mkdir dir="${project.testdir}"/>
+
+    <!-- Set property to prevent target from being executed multiple times -->
+    <property name="project.cleaned" value="true"/>
+  </target>

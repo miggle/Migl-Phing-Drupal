@@ -1,0 +1,268 @@
+<!-- ### PHP linting
+
+Check files for syntax errors. -->
+  <target name="lint-php"
+          description="Check all PHP files for syntax errors using PHPLint"
+          depends="init">
+    <phplint haltonfailure="true">
+      <fileset refid="src.php" />
+    </phplint>
+  </target>
+
+  <target name="lint-php-custom"
+          description="Check custom PHP files for syntax errors using PHPLint"
+          depends="init">
+    <phplint haltonfailure="true">
+      <fileset refid="src.php.custom" />
+    </phplint>
+  </target>
+
+  <target name="lint-js"
+          description="Check all Javascript files using JSlint"
+          depends="init, setup-jslint4java, setup-jslint">
+    <foreach target="jslint-file" param="filename" absparam="absfilename">
+      <fileset refid="src.js"/>
+    </foreach>
+  </target>
+
+  <target name="lint-js-custom"
+          description="Check custom Javascript files using JSlint"
+          depends="init, setup-jslint4java, setup-jslint">
+    <foreach target="jslint-file" param="filename" absparam="absfilename">
+      <fileset refid="src.js.custom"/>
+    </foreach>
+  </target>
+
+<!-- #### jslint a file
+
+No need to run `init` or setup targets here. This target should only be called
+from parent `lint-js` targets. -->
+  <target name="jslint-file">
+    <echo>Linting file: ${absfilename}</echo>
+
+    <!-- Execute jslint4java and return the result in checkstyle format-->
+    <exec command="java -jar ${jslint4java.file}
+                   --jslint ${jslint.file} --report checkstyle ${absfilename}"
+          outputProperty="report" />
+
+    <!-- Print the result to a file.
+         Replace / with - in path to create legal filenames in the format
+         `checkstyle-jslint-dir1-dir2-file.js.xml`. -->
+    <php function="str_replace" returnProperty="filename.normalized">
+      <param value="/" />
+      <param value="-" />
+      <param value="${filename}" />
+    </php>
+    <delete file="${project.logdir}/checkstyle-jslint-${filename.normalized}.xml" />
+    <append text="${report}"  destFile="${project.logdir}/checkstyle-jslint-${filename.normalized}.xml" />
+  </target>
+
+  <!-- #### Setup jslint4java -->
+  <target name="setup-jslint4java"
+          depends="init"
+          unless="project.jslint4java.setup">
+    <property name="jslint4java.dir"
+              value="${project.toolsdir}/jslint4java" />
+    <php function="basename" returnProperty="jslint4java.basename">
+      <param value="${jslint4java.url}" />
+      <!-- We assume that the version of jslint4java used is a distribution
+           where the filename ends in `-dist.zip` -->
+      <param value="-dist.zip" />
+    </php>
+
+    <!-- Download and unpack jslint4java -->
+    <mkdir dir="${jslint4java.dir}" />
+    <php function="basename" returnProperty="jslint4java.zipfile">
+      <param value="${jslint4java.url}" />
+    </php>
+    <httpget url="${jslint4java.url}"
+             dir="${jslint4java.dir}"
+             proxy="${phing.httpget.proxy}" />
+    <unzip file="${jslint4java.dir}/${jslint4java.zipfile}"
+           todir="${jslint4java.dir}" />
+
+    <!-- Other targets use this property to determine the location of the
+         `jslint4java.jar` file -->
+    <property name="jslint4java.file"
+ value="${jslint4java.dir}/${jslint4java.basename}/${jslint4java.basename}.jar"/>
+
+    <!-- Set property to prevent unnecessary additional invocations of this
+         target -->
+    <property name="project.jslint4java.setup" value="true" />
+  </target>
+
+  <!-- #### Setup jslint -->
+  <target name="setup-jslint"
+          depends="init"
+          unless="project.jslint.setup">
+    <phingcall target="setup-git-repo">
+      <property name="repo.dir" value="${project.toolsdir}/jslint"/>
+      <property name="repo.url" value="${jslint.repository.url}" />
+    </phingcall>
+
+    <!-- Other targets use this property to determine the location of the jslint
+         file -->
+    <property name="jslint.file"
+              value="${project.toolsdir}/jslint/${jslint.file}"
+              override="true" />
+
+    <!-- Set property to prevent unnecessary additional invocations of this
+         target -->
+    <property name="project.jslint.setup" value="true" />
+  </target>
+
+<!-- ### CSS linting
+
+Checks code against [CSS Lint](http://www.csslint.net/) to help point out problems with CSS code. It does basic syntax checking as well as applying a set of rules to the code that look for problematic patterns or signs of inefficiency. -->
+  <target name="lint-css"
+          description="Check all CSS files using CSS Lint"
+          depends="init, setup-rhino, setup-csslint">
+    <foreach target="csslint-file" param="filename" absparam="absfilename">
+      <fileset refid="src.css"/>
+    </foreach>
+  </target>
+
+  <target name="lint-css-custom"
+          description="Check custom CSS files using CSS Lint"
+          depends="init, setup-rhino, setup-csslint">
+    <foreach target="csslint-file" param="filename" absparam="absfilename">
+      <fileset refid="src.css.custom"/>
+    </foreach>
+  </target>
+
+<!-- #### csslint a file
+
+No need to run `init` or setup targets here. This target should only be called
+from parent `lint-css` targets. -->
+  <target name="csslint-file">
+    <echo>Linting file: ${absfilename}</echo>
+
+    <!-- Run csslint through Rhino and return the result in
+         checkstyle format-->
+    <exec command="java -jar ${rhino.jar} ${csslint.rhino.file}
+                   --format=checkstyle-xml --rules=${csslint.rules}
+                   ${absfilename}"
+          outputProperty="report" />
+
+    <!-- Print the result to a file.
+         Replace / with - in path to create legal filenames in the format
+         `checkstyle-csslint-dir1-dir2-file.css.xml`. -->
+    <php function="str_replace" returnProperty="filename.normalized">
+      <param value="/" />
+      <param value="-" />
+      <param value="${filename}" />
+    </php>
+
+    <property name="csslint.report.file" value="${project.logdir}/checkstyle-csslint-${filename.normalized}.xml" />
+    <delete file="${csslint.report.file}" />
+    <append text="${report}"  destFile="${csslint.report.file}" />
+
+
+    <!-- Cleanup the break rules property.
+         Hyphens are removed to support both input and output rule format.
+         csslint-rule becomes CsslintRule.
+         Seperators (Commas and multiple whitespace characters) are reduced
+         to a pipe to be used in a regular expression. -->
+         <php expression="str_replace('-', '', '${csslint.rules.break}')"
+              returnProperty="csslint.rules.break"/>
+         <php expression="preg_replace('/(\s+|\s*,\s*)/', '|', '${csslint.rules.break}')"
+              returnProperty="csslint.rules.break"/>
+
+    <!-- If any rules which require the build to break are defined then
+         look for them. -->
+    <if>
+      <not>
+        <equals arg1="${csslint.rules.break}" arg2="" />
+      </not>
+      <then>
+        <!-- CSS Lint reports checkstyle errors using the format
+             net.csslint.RuleName. Load all checkstyle reports and look for
+             errors with such a source from the provided rules. -->
+        <loadfile property="csslint.break.errors"
+                  file="${csslint.report.file}">
+          <filterchain>
+            <linecontainsregexp>
+                <regexp pattern="(net\.csslint\.(${csslint.rules.break}))"
+                        ignoreCase="true" />
+              </linecontainsregexp>
+          </filterchain>
+        </loadfile>
+
+        <!-- Break if any errors from the provided rules are detected! -->
+        <if>
+          <not>
+            <equals arg1="${csslint.break.errors}" arg2="" />
+          </not>
+          <then>
+            <fail message="CSS error detected in file ${absfilename}" />
+          </then>
+        </if>
+      </then>
+    </if>
+  </target>
+
+   <!-- #### Setup csslint -->
+   <target name="setup-csslint"
+           depends="init"
+           unless="project.csslint.setup">
+     <phingcall target="setup-git-repo">
+       <property name="repo.dir"
+                 value="${project.toolsdir}/csslint"/>
+       <property name="repo.url"
+                 value="${csslint.repository.url}" />
+       <property name="repo.revision"
+                 value="${csslint.repository.revision}" />
+     </phingcall>
+
+     <!-- Other targets use this property to determine the location of the
+          csslint rhino file -->
+     <property name="csslint.rhino.file"
+               value="${project.toolsdir}/csslint/release/csslint-rhino.js" />
+
+     <!-- Set property to prevent unnecessary additional invocations of this
+          target -->
+     <property name="project.csslint.setup" value="true" />
+   </target>
+
+  <!-- ### Setup Rhino
+
+[Mozilla Rhino](http://www.mozilla.org/rhino/) is an open-source implementation of JavaScript written in Java. -->
+   <target name="setup-rhino"
+           depends="setup-dirs"
+           unless="project.rhino.setup">
+     <property name="rhino.dir"
+               value="${project.toolsdir}/rhino" />
+     <php function="basename" returnProperty="rhino.basename">
+       <param value="${rhino.url}" />
+       <!-- We assume that the version of Rhino used is a distribution
+            where the filename ends in `.zip` -->
+       <param value=".zip" />
+     </php>
+
+     <!-- Other targets use this property to determine the location of the
+          `js.jar` file -->
+     <property name="rhino.jar"
+               value="${rhino.dir}/${rhino.basename}/js.jar"/>
+
+     <!-- If the Rhino js.jar file is not available then download and
+          unpack Rhino -->
+     <if>
+       <not><available file="${rhino.jar}"/></not>
+       <then>
+         <mkdir dir="${rhino.dir}" />
+         <php function="basename" returnProperty="rhino.zipfile">
+           <param value="${rhino.url}" />
+         </php>
+         <httpget url="${rhino.url}"
+                  dir="${rhino.dir}"
+                  proxy="${phing.httpget.proxy}"/>
+         <unzip file="${rhino.dir}/${rhino.zipfile}"
+                todir="${rhino.dir}" />
+       </then>
+     </if>
+
+     <!-- Set property to prevent unnecessary additional invocations of this
+          target -->
+     <property name="project.rhino.setup" value="true" />
+   </target>
+
