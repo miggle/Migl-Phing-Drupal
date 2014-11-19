@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
 <!-- ### Setup directories
 
 Define working directories - where the individual parts of the build are and
@@ -32,3 +33,4 @@ called from `init` target. -->
     <property name="project.testdir"
               value="${project.builddir}/tests" />
   </target>
+</project>

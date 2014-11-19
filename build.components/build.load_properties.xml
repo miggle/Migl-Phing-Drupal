@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
 <!-- ### Load properties
 
 Loads a set of project specific properties from a `.properties` file.
@@ -74,4 +75,4 @@ root directory. -->
       </then>
     </if>
   </target>
-
+</project>

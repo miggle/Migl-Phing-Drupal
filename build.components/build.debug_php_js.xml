@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
 <!-- ### Debug code detection
 
 Code should not call functions which are usually used for debugging.
@@ -78,3 +79,4 @@ No need to run `init` here. This target should only be called through parent
       </then>
     </if>
   </target>
+</project>

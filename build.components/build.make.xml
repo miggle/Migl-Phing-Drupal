@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
 <!-- ### Drush Make
 
 Download and install the source code for the site using Drush Make.
@@ -84,3 +85,4 @@ called from `init` target. -->
       </else>
     </if>
   </target>
+</project>

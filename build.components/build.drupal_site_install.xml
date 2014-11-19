@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
 <!-- ### Install a Drupal site
 
 This initializes a Drupal site using a installation profile.
@@ -27,3 +28,4 @@ Configuration of which installation profile and database to use in done in
     <!-- Set property to prevent target from being executed multiple times -->
     <property name="project.installed" value="true"/>
   </target>
+</project>

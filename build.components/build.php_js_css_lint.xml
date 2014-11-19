@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
 <!-- ### PHP linting
 
 Check files for syntax errors. -->
@@ -265,4 +266,4 @@ from parent `lint-css` targets. -->
           target -->
      <property name="project.rhino.setup" value="true" />
    </target>
-
+</project>

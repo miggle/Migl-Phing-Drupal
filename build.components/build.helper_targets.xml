@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
   <!-- HELPER -->
   <!-- ### Clone a git repository -->
   <target name="setup-git-repo">
@@ -37,3 +38,4 @@
       </then>
     </if>
   </target>
+</project>

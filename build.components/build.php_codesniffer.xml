@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
 <!-- ### Review code using PHP_CodeSniffer
 
 The purpose and outcome of this target is the same as the coder-review
@@ -28,3 +29,4 @@ Consequently `coder-review-d6/7` and not `phpcs` is used for the main targets.
                     ${project.sitesdir}"
             logoutput="true" />
     </target>
+</project>

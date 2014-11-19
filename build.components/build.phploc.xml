@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
 <!-- ### Generate code statistics
 
 Measures the size of the project using
@@ -27,4 +28,4 @@ statistics. -->
     <taskdef name="phploc" classname="PHPLocTask"
              classpath="${project.toolsdir}/phing-phploc" />
   </target>
-
+</project>

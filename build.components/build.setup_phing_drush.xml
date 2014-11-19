@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
   <!-- ### Setup Phing Drush integration -->
   <target name="setup-phing-drush"
           depends="setup-dirs" >
@@ -18,3 +19,4 @@
     <!-- Run drush from the project Drupal directory -->
     <property name="drush.root" value="${project.drupal.dir}"/>
   </target>
+</project>

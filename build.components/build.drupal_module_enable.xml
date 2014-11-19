@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
   <!-- ### Download and enable a project/module -->
   <target name="enable-module"
           depends="setup-phing-drush">
@@ -31,3 +32,4 @@
       <param>${module}</param>
     </drush>
   </target>
+</project>

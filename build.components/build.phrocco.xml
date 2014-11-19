@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
    <!-- ### Build documentation using Phrocco
 
 Generate documentation for the build script using [Phrocco](https://github.com/oneblakbear/phrocco) and prepare for pushing changes to [GitHub pages](http://pages.github.com/).
@@ -45,3 +46,4 @@ parsing installed. The task is primarily for template developers. -->
      <exec command="git checkout ${phrocco.code.branch}"
            passthru="true" checkreturn="true"/>
    </target>
+</project>

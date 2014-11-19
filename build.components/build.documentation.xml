@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
 <!-- ### Generate documentation
 
 Generate HTML documentation and code browser for the project. -->
@@ -37,3 +38,4 @@ colored error-sections using
                           --output ${project.builddir}/code-browser"
           logoutput="true" />
   </target>
+</project>

@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
 <!-- ### Detect potential copy/pasting
 
 Uses [phpcpd](https://github.com/sebastianbergmann/phpcpd) to detect duplicate
@@ -10,3 +11,4 @@ code. This indicates potential refactorings.-->
       <formatter type="pmd" outfile="${project.logdir}/pmd-cpd.xml"/>
     </phpcpd>
   </target>
+</project>

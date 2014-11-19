@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
 <!-- ### Clean working environment  -->
   <target name="clean"
           description="Clean up and create artifact directories"
@@ -28,3 +29,4 @@
     <!-- Set property to prevent target from being executed multiple times -->
     <property name="project.cleaned" value="true"/>
   </target>
+</project>

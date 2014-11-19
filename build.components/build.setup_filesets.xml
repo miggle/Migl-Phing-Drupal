@@ -1,3 +1,4 @@
+<project name="phing-drupal" default="build">
 <!-- ### Setup file sets
 
 Setup file sets - patterns for different aspects of the source code.
@@ -90,3 +91,4 @@ called from `init` target. -->
     </fileset>
 
   </target>
+</project>
