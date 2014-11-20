@@ -10,11 +10,6 @@ Configuration of which installation profile and database to use in done in
           unless="project.installed">
     <drush command="site-install" assume="yes">
       <option name="db-url">${drupal.db.url}</option>
-      <option name="account-mail">${drupal.admin.email}</option>
-      <option name="account-name">${drupal.admin.name}</option>
-      <option name="account-pass">${drupal.admin.pass}</option>
-      <option name="site-name">${drupal.sitename}</option>
-      <option name="site-mail">${drupal.sitemail}</option>
       <param>${drupal.profile}</param>
     </drush>
     <!-- Fix permissions for the default site directory and settings. The
