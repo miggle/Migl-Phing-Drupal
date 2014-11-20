@@ -10,7 +10,7 @@ default:
     features: 'features'
   extensions:
     Behat\MinkExtension\Extension:
-      base_url: 'http://${drupal.uri}'
+      base_url: '${drupal.uri}'
       files_path: 'features/files'
       goutte: ~
       selenium2: ~
