@@ -24,7 +24,8 @@
                                  lint-css-custom,
                                  check-php-debug,
                                  check-js-debug,
-                                 simpletest"/>
+                                 simpletest,
+                                 behat"/>
 
   <!-- ### Analyze code
   Perform static analysis of the code to generate statistics, identify potential
@@ -80,6 +81,9 @@
 
   <!-- ### Run simpletests -->
   <import file="${phing.dir}/build.components/build.simpletest.xml" />
+
+  <!-- ### Run behat tests -->
+  <import file="${phing.dir}/build.components/build.behat.xml" />
 
   <!-- ## Helper targets
   These targets are used throughout the project and should normally not be
