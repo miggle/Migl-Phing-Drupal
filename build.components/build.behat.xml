@@ -13,7 +13,7 @@ Execution of this target can be skipped by setting the
     </copy>
 
     <echo>Running tests.</echo>
-    <exec command="behat --format=junit --out=${project.testdir}" passthru="true"></exec>
+    <exec command="behat" passthru="true"></exec>
 
   </target>
 </project>

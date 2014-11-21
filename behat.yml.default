@@ -2,7 +2,7 @@ default:
   formatter:
     name: pretty,junit
     parameters:
-      output_path: ,build/tests
+      output_path: ,${project.testdir}
   paths:
     features: 'features'
   extensions:
