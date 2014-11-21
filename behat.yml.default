@@ -1,4 +1,8 @@
 default:
+  formatter:
+    name: pretty,junit
+    parameters:
+      output_path: ,build/tests
   paths:
     features: 'features'
   extensions:
