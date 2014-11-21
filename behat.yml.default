@@ -1,14 +1,10 @@
 default:
-  suites:
-    default:
-      contexts:
-        - FeatureContext
-        - Drupal\DrupalExtension\Context\DrupalContext
-        - Drupal\DrupalExtension\Context\MinkContext
+  paths:
+    features: 'features'
   extensions:
-    Behat\MinkExtension:
+    Behat\MinkExtension\Extension:
       goutte: ~
       selenium2: ~
-      base_url: 'http://${drupal.uri}'
-    Drupal\DrupalExtension:
+      base_url: '${drupal.uri}'
+    Drupal\DrupalExtension\Extension:
       blackbox: ~
