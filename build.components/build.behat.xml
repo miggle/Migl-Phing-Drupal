@@ -6,14 +6,14 @@ Execution of this target can be skipped by setting the
 -->
   <target name="behat">
     <echo>Creating behat.yml file.</echo>
-    <copy file="behat.yml.dist" tofile="behat.yml" overwrite="true">
+    <copy file="behat.yml.default" tofile="behat.yml" overwrite="true">
       <filterchain>
         <expandproperties />
       </filterchain>
     </copy>
 
     <echo>Running tests.</echo>
-    <exec command="behat --format=junit --out=${project.testdir}"></exec>
+    <exec command="behat --format=junit --out=${project.testdir}" passthru="true"></exec>
 
   </target>
 </project>
