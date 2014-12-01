@@ -1,0 +1,13 @@
+<project name="phing-drupal" default="build">
+  <target name="app-backup-database">
+    <echo>Backing up database.</echo>
+    <tstamp>
+      <format property="build.time" pattern="%Y%m%d%H%M"/>
+    </tstamp>
+    <drush command="sql-dump" assume="yes">
+      <param>@${drush.alias}</param>
+      <param>--gzip</param>
+      <option name="result-file">/tmp/${phing.project.name}-drush-sql-dump-${build.time}.sql</option>
+    </drush>
+  </target>
+</project>

@@ -1,0 +1,44 @@
+<project name="phing-drupal" default="build">
+
+  <!-- Rebuild registry -->
+  <target name="drush-registry-rebuild">
+    <echo>Rebuilding registry.</echo>
+    <drush command="rr">
+      <param>@${drush.alias}</param>
+    </drush>
+  </target>
+
+  <!-- Enable master_dependency module -->
+  <target name="drush-md-enable">
+    <echo>Enabling Master Dependency module.</echo>
+    <drush command="pm-enable" assume="yes">
+      <param>@${drush.alias}</param>
+      <param>master_dependency</param>
+    </drush>
+  </target>
+
+  <!-- Revert features (force) -->
+  <target name="drush-revert-features">
+    <echo>Reverting all features.</echo>
+    <drush command="features-revert-all" assume="yes">
+      <param>@${drush.alias}</param>
+      <option name="force"></option>
+    </drush>
+  </target>
+
+  <!-- Run updates -->
+  <target name="drush-updatedb">
+    <drush command="updatedb" assume="yes">
+      <param>@${drush.alias}</param>
+    </drush>
+  </target>
+
+  <!-- Clear caches -->
+  <target name="drush-cache-clear">
+    <drush command="cc" assume="yes">
+      <param>@${drush.alias}</param>
+      <param>all</param>
+    </drush>
+  </target>
+
+</project>
