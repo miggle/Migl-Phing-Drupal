@@ -18,12 +18,12 @@
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>git@github.com:miggle/Migl-Phing-Drupal.git</url>
+        <url>https://github.com/miggle/Migl-Phing-Drupal.git</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-        <name>develop</name>
+        <name>master</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
@@ -47,8 +47,7 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>composer install
-drush --version</command>
+      <command>composer install</command>
     </hudson.tasks.Shell>
     <hudson.plugins.phing.PhingBuilder plugin="phing@0.13.1">
       <buildFile>build.xml</buildFile>
