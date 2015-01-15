@@ -51,7 +51,7 @@
     </hudson.tasks.Shell>
     <hudson.plugins.phing.PhingBuilder plugin="phing@0.13.1">
       <buildFile>build.xml</buildFile>
-      <properties>drupal.profile=skisafari</properties>
+      <name>Phing</name>
       <useModuleRoot>false</useModuleRoot>
     </hudson.plugins.phing.PhingBuilder>
   </builders>
