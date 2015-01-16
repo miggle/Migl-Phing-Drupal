@@ -12,11 +12,3 @@ Feature: front page
     When I press "Log in"
     Then I should see "Username field is required."
     And I should see "Password field is required."
-
-  Scenario: Submits credentials when required fields are filled out
-    Given I am on "/user/login"
-    And the response status code should be 200
-    When I fill in "Username" with "italy"
-    And I fill in "Password" with "italy"
-    And I press "Log in"
-    Then I should see "italy"
