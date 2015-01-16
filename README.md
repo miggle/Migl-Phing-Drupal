@@ -19,9 +19,9 @@
 
 ## Usage
 
-To clone this repo and the migl-make sub-repo use the following: 
+To clone this repo: 
 
-<code>git clone --recursive git@github.com:miggle/Migl-Phing-Drupal.git new-project</code>
+<code>git clone git@github.com:miggle/Migl-Phing-Drupal.git new-project</code>
 
 Install dependencies
 
