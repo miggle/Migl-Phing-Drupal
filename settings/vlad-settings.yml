@@ -17,7 +17,7 @@
 # Vagrantfile configuration
   boxipaddress: "192.168.88.88"
   boxname: "drupal8"
-  host_synced_folder: "./docroot"
+  host_synced_folder: "../docroot"
 
 # Install components:
 # - To install a component set it to true.
