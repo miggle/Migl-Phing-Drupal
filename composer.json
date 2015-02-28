@@ -27,7 +27,7 @@
         "drupal/drupal-extension": "1.0.*@stable",
         "drush/drush": "6.2.*",
         "squizlabs/php_codesniffer": "1.5.*",
-        "phpmd/phpmd": "1.5.*",
+        "phpmd/phpmd": "*",
         "sebastian/phpcpd": "*",
         "phploc/phploc": "*",
         "drupal/coder": "7.2.*"
