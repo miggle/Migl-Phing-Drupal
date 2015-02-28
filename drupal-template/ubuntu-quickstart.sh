@@ -34,14 +34,13 @@ java -jar jenkins-cli.jar -s http://localhost:8080 install-plugin phing php gith
 
 echo "download jenkins drupal-template..."
 # setup jenkins template
-su jenkins
 mkdir /var/lib/jenkins/jobs/drupal-template
 cd /var/lib/jenkins/jobs/drupal-template
 wget https://raw.githubusercontent.com/miggle/Migl-Phing-Drupal/master/drupal-template/config.xml
-exit
+chown -Rf jenkins:jenkins /var/lib/jenkins/jobs/drupal-template
 
 # restart jenkins
-cd
+cd /root
 java -jar jenkins-cli.jar -s http://localhost:8080 safe-restart
 
 echo "you all setup!!";
