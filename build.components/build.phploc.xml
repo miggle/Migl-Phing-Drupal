@@ -18,7 +18,7 @@ statistics. -->
 
   <!-- #### Setup Phing phploc integration -->
   <target name="setup-phing-phploc"
-          depends="init" >
+          depends="init">
     <!-- Clone the project -->
     <phingcall target="setup-git-repo">
       <property name="repo.dir" value="${project.toolsdir}/phing-phploc"/>

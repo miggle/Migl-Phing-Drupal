@@ -70,6 +70,14 @@ root directory. -->
         <!-- Load the overriding properties. -->
         <property file="${project.properties.file}" override="true" />
 
+        <!-- Allow override using 'build.${build.env}.properties file -->
+        <available file="${project.basedir}/build.${build.env}.properties"
+                   property="project.properties.file"
+                   value="${project.basedir}/build.${build.env}.properties" />
+
+        <!-- Load the overriding properties. -->
+        <property file="${project.properties.file}" override="true" />
+
         <!-- Set property to prevent unnecessary additional invocations of this target -->
         <property name="project.properties.loaded" value="true" />
       </then>
