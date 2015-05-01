@@ -1,0 +1,7 @@
+[submodule "migl-make"]
+	path = migl-make
+	url = git@github.com:miggle/migl-make.git
+[submodule "vlad"]
+	path = vlad
+	url = git@github.com:hashbangcode/vlad.git
+	branch = dev
