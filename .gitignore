@@ -1,0 +1,6 @@
+.idea
+bin
+build
+composer.lock
+vendor
+behat.yml
